@@ -1,4 +1,4 @@
-import lx, modo, life_server, datetime, os, sys, errno
+import lx, modo, lifesaver, datetime, os, sys, errno
 from xml.etree import ElementTree
 
 def get_this_kit_path():
@@ -91,12 +91,12 @@ def merge_configs(modo_config_path, keepers):
             
             with open(backup_config_path, 'wb') as file:
                 file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-                file.write('\n<!-- backup by life_server on %s -->\n\n' % datetime.datetime.now().strftime("%d-%M-%y at %H:%M"))
+                file.write('\n<!-- backup by lifesaver on %s -->\n\n' % datetime.datetime.now().strftime("%d-%M-%y at %H:%M"))
                 file.write("<configuration>\n\n  ")
                 file.write(ElementTree.tostring(new_vals))
                 file.write("\n</configuration>")
 
-class StartupCommandClass(life_server.CommanderClass):
+class StartupCommandClass(lifesaver.CommanderClass):
 
     def commander_arguments(self):
         return [
@@ -143,4 +143,4 @@ class StartupCommandClass(life_server.CommanderClass):
         
         merge_configs(modo_config_path, keepers)
         
-lx.bless(StartupCommandClass, 'life_server.startup')
+lx.bless(StartupCommandClass, 'lifesaver.startup')
