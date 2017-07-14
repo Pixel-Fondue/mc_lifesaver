@@ -1,19 +1,8 @@
-import lx, modo, lifesaver, datetime, os, sys, errno
-from xml.etree import ElementTree
 
-def get_this_kit_path():
-    this_dir = os.path.dirname(os.path.realpath(__file__))
-    while len(this_dir) != 0 and not os.path.isfile(os.path.join(this_dir, "index.cfg")):
-        this_dir = os.path.dirname(this_dir)
-        
-    return this_dir
-    
-def get_backup_config_path(tag_type):
-    prefix = os.path.join(get_this_kit_path(), 'Configs', 'Backup')
-    return "%s_%s.cfg" % (prefix, tag_type)
-    
-def get_modo_config_path():
-    return lx.eval("query platformservice path.path ? configname")
+# python
+
+import lx, modo, lifesaver, datetime, errno
+from xml.etree import ElementTree
     
 def merge_unique_first(list1, list2, key):
     len1 = len(list1)
@@ -65,7 +54,7 @@ def merge_configs(modo_config_path, keepers):
             vals = kid.getchildren()
             vals.sort(key=lambda x: x.attrib.get("key", None))
 
-            backup_config_path = get_backup_config_path(tag_type)
+            backup_config_path = lifesaver.get_backup_config_path(tag_type)
             try:
                 with open(backup_config_path, "r") as backup_config_file:
                     backup_config_root = ElementTree.fromstring(unicode(backup_config_file.read(), errors='ignore'))
@@ -83,8 +72,6 @@ def merge_configs(modo_config_path, keepers):
             backup_vals.sort(key=lambda x: x.attrib.get("key", None))
             
             new_vals = ElementTree.Element(kid.tag, kid.attrib)
-                
-            lx.out(new_vals.getchildren())
             
             for val in merge_unique_first(vals, backup_vals, key=lambda x: x.attrib.get("key", None)):
                 new_vals.append(val)
@@ -96,7 +83,7 @@ def merge_configs(modo_config_path, keepers):
                 file.write(ElementTree.tostring(new_vals))
                 file.write("\n</configuration>")
 
-class StartupCommandClass(lifesaver.CommanderClass):
+class MergePrefsCommandClass(lifesaver.CommanderClass):
 
     def commander_arguments(self):
         return [
@@ -130,17 +117,22 @@ class StartupCommandClass(lifesaver.CommanderClass):
         backup_app_global = self.commander_arg_value(3)
       
         keepers = list()
-        if self.commander_arg_value(0):
+        if backup_input_remapping:
             keepers.append("InputRemapping")
-        if self.commander_arg_value(1):
+        if backup_dir_browser:
             keepers.append("DirBrowser")
-        if self.commander_arg_value(2):
+        if backup_preferences:
             keepers.append("Preferences")
-        if self.commander_arg_value(3):
+        if backup_app_global:
             keepers.append("AppGlobal")
     
-        modo_config_path = get_modo_config_path()
+        modo_config_path = lifesaver.get_modo_config_path()
         
         merge_configs(modo_config_path, keepers)
         
-lx.bless(StartupCommandClass, 'lifesaver.startup')
+        lx.eval("lifesaver.preference lifesaver_backup_input_remapping %s" % backup_input_remapping)
+        lx.eval("lifesaver.preference lifesaver_backup_preset_browser_state %s" % backup_dir_browser)
+        lx.eval("lifesaver.preference lifesaver_backup_preferences %s" % backup_preferences)
+        lx.eval("lifesaver.preference lifesaver_backup_global_settings %s" % backup_app_global)
+        
+lx.bless(MergePrefsCommandClass, 'lifesaver.mergePrefs')
