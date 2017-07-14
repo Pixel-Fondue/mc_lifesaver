@@ -72,7 +72,7 @@ def merge_configs(modo_config_path, keepers):
             backup_vals.sort(key=lambda x: x.attrib.get("key", None))
             
             new_vals = ElementTree.Element(kid.tag, kid.attrib)
-            
+
             for val in merge_unique_first(vals, backup_vals, key=lambda x: x.attrib.get("key", None)):
                 new_vals.append(val)
             
@@ -86,53 +86,27 @@ def merge_configs(modo_config_path, keepers):
 class MergePrefsCommandClass(lifesaver.CommanderClass):
 
     def commander_arguments(self):
-        return [
-            {
-                'name': 'inputRemapping',
+        args = []
+
+        for i in lifesaver.KEEPERS:
+            args.append({
+                'name': i[0],
                 'datatype': 'boolean',
-                'label': 'Backup Input Remapping',
+                'label': i[1],
                 'default': True
-            }, {
-                'name': 'dirBrowser',
-                'datatype': 'boolean',
-                'label': 'Backup Preset Browser State',
-                'default': True
-            }, {
-                'name': 'preferences',
-                'datatype': 'boolean',
-                'label': 'Backup Preferences',
-                'default': True
-            }, {
-                'name': 'appGlobal',
-                'datatype': 'boolean',
-                'label': 'Backup Global Settings',
-                'default': True
-            }
-        ]
+            })
+
+        return args
 
     def commander_execute(self, msg, flags):
-        backup_input_remapping = self.commander_arg_value(0)
-        backup_dir_browser = self.commander_arg_value(1)
-        backup_preferences = self.commander_arg_value(2)
-        backup_app_global = self.commander_arg_value(3)
-      
-        keepers = list()
-        if backup_input_remapping:
-            keepers.append("InputRemapping")
-        if backup_dir_browser:
-            keepers.append("DirBrowser")
-        if backup_preferences:
-            keepers.append("Preferences")
-        if backup_app_global:
-            keepers.append("AppGlobal")
-    
+        args = self.commander_args()
+
         modo_config_path = lifesaver.get_modo_config_path()
-        
+
+        keepers = [key for key, enabled in args.iteritems() if enabled]
         merge_configs(modo_config_path, keepers)
-        
-        lx.eval("lifesaver.preference lifesaver_backup_input_remapping %s" % backup_input_remapping)
-        lx.eval("lifesaver.preference lifesaver_backup_preset_browser_state %s" % backup_dir_browser)
-        lx.eval("lifesaver.preference lifesaver_backup_preferences %s" % backup_preferences)
-        lx.eval("lifesaver.preference lifesaver_backup_global_settings %s" % backup_app_global)
-        
+
+        for k, v in args.iteritems():
+            lx.eval("lifesaver.preference %s %s" % (k, v))
+
 lx.bless(MergePrefsCommandClass, 'lifesaver.mergePrefs')
