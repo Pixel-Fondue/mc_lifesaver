@@ -39,11 +39,9 @@ class PreferenceCommandClass(lifesaver.commander.CommanderClass):
                 break
 
         if pref is not None:
-
             oldVal = bool(lx.eval("user.value %s ?" % pref[3]))
 
             if oldVal and not value and os.path.isfile(lifesaver.get_backup_config_path(pref[0])):
-
                 msg = "This will delete %s backup data. Are you sure?" % pref[1]
                 if modo.dialogs.yesNo("Are you sure?", msg) == 'no':
                     return
@@ -57,8 +55,7 @@ class PreferenceCommandClass(lifesaver.commander.CommanderClass):
                         clearCmd += " 0"
                 lx.eval(clearCmd)
 
-            else:
-                lx.eval("user.value %s %s" % (name, value))
+            lx.eval("user.value %s %s" % (pref[3], value))
 
         if pref is None:
             lx.out(name, value)
