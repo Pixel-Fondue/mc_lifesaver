@@ -90,7 +90,7 @@ class MergePrefsCommandClass(lifesaver.CommanderClass):
 
         for i in lifesaver.KEEPERS:
             args.append({
-                'name': i[3],
+                'name': i[0],
                 'datatype': 'boolean',
                 'label': i[1],
                 'default': True
@@ -107,6 +107,9 @@ class MergePrefsCommandClass(lifesaver.CommanderClass):
         merge_configs(modo_config_path, keepers)
 
         for k, v in args.iteritems():
-            lx.eval("lifesaver.preference %s %s" % (k, v))
+            for i in lifesaver.KEEPERS:
+                if i[0] == k:
+                    lx.eval("lifesaver.preference %s %s" % (i[3], v))
+                break
 
 lx.bless(MergePrefsCommandClass, 'lifesaver.mergePrefs')
