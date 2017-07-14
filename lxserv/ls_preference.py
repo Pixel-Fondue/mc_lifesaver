@@ -74,7 +74,7 @@ class PreferenceCommandClass(lifesaver.commander.CommanderClass):
         return lx.result.OK
         
     def basic_ArgType(self, argIndex):
-        return 'boolean'
+        return lx.symbol.sTYPE_BOOLEAN
 
 #    def commander_notifiers(self):
 #        return [("lifesaver.notifier", "")]
