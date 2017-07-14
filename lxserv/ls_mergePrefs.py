@@ -43,10 +43,6 @@ def merge_configs(modo_config_path, keepers):
 
     kids = modo_config_root.getchildren()
     
-    keeper_to_kids = dict()
-    for keeper in keepers:
-        keeper_to_kids[keeper] = list()
-
     for kid in kids:
         tag_type = kid.attrib.get("type", None)
 
@@ -55,26 +51,28 @@ def merge_configs(modo_config_path, keepers):
             vals.sort(key=lambda x: x.attrib.get("key", None))
 
             backup_config_path = lifesaver.get_backup_config_path(tag_type)
-            try:
-                with open(backup_config_path, "r") as backup_config_file:
-                    backup_config_root = ElementTree.fromstring(unicode(backup_config_file.read(), errors='ignore'))
-                backup_kids = backup_config_root.getchildren()
-                if len(backup_kids) != 1 or backup_kids[0].attrib.get("type", None) != tag_type:
-                    modo.dialogs.alert("Failed", "Corrupted backup file.")
-                    return
-                backup_vals = backup_kids[0].getchildren()
-            except IOError as e:
-                if e.errno == errno.ENOENT:
-                    backup_vals = []
-                else:
-                    raise
-                
-            backup_vals.sort(key=lambda x: x.attrib.get("key", None))
-            
             new_vals = ElementTree.Element(kid.tag, kid.attrib)
-
-            for val in merge_unique_first(vals, backup_vals, key=lambda x: x.attrib.get("key", None)):
-                new_vals.append(val)
+            if lifesaver.mergeKeeper(tag_type):
+                try:
+                    with open(backup_config_path, "r") as backup_config_file:
+                        backup_config_root = ElementTree.fromstring(unicode(backup_config_file.read(), errors='ignore'))
+                    backup_kids = backup_config_root.getchildren()
+                    if len(backup_kids) != 1 or backup_kids[0].attrib.get("type", None) != tag_type:
+                        modo.dialogs.alert("Failed", "Corrupted backup file.")
+                        return
+                    backup_vals = backup_kids[0].getchildren()
+                except IOError as e:
+                    if e.errno == errno.ENOENT:
+                        backup_vals = []
+                    else:
+                        raise
+                    
+                backup_vals.sort(key=lambda x: x.attrib.get("key", None))
+            
+                for val in merge_unique_first(vals, backup_vals, key=lambda x: x.attrib.get("key", None)):
+                    new_vals.append(val)
+            else:
+                new_vals = vals
             
             with open(backup_config_path, 'wb') as file:
                 file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
