@@ -13,7 +13,7 @@ class StartupCommandClass(lifesaver.CommanderClass):
                 lx.eval('user.defNew %s boolean' % i[3])
                 lx.eval('user.value %s true' % i[3])
 
-        firstTime = lx.eval("lifesaver.preference lifesaver_first_time_after_reset ?")
+        firstTime = lx.eval("user.value lifesaver_first_time_after_reset ?")
         
         if firstTime:
             try:
@@ -23,7 +23,7 @@ class StartupCommandClass(lifesaver.CommanderClass):
                 return lx.symbol.e_ABORT
 
             finally:
-                lx.eval("lifesaver.preference lifesaver_first_time_after_reset 0")
+                lx.eval("user.value lifesaver_first_time_after_reset 0")
 
         else:
             cmd = 'lifesaver.mergePrefs'

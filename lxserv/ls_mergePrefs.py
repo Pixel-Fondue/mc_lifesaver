@@ -90,7 +90,7 @@ class MergePrefsCommandClass(lifesaver.CommanderClass):
 
         for i in lifesaver.KEEPERS:
             args.append({
-                'name': i[0],
+                'name': i[3],
                 'datatype': 'boolean',
                 'label': i[1],
                 'default': True

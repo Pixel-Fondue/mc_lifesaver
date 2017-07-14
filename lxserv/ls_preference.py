@@ -53,6 +53,7 @@ class PreferenceCommandClass(lifesaver.commander.CommanderClass):
                 lx.eval("user.value %s %s" % (name, value))
 
         if pref is None:
+            lx.out(name, value)
             lx.eval("user.value %s %s" % (name, value))
 
         # notifier = lifesaver.Notifier()

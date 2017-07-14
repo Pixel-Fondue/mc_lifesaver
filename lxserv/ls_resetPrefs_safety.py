@@ -28,7 +28,7 @@ class ResetPrefsCommandClass(lifesaver.CommanderClass):
 
             clearCmd = 'lifesaver.clearPrefs'
             for i in lifesaver.KEEPERS:
-                clearCmd += (str(lx.eval('lifesaver.preference %s ?' % i[0])))
+                clearCmd += " " + str(lx.eval('lifesaver.preference %s ?' % i[3]))
 
             lx.eval(clearCmd)
 
