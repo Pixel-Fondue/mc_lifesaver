@@ -38,8 +38,8 @@ def merge_configs(modo_config_path, keepers):
         with open(modo_config_path, "r") as modo_config_file:
             modo_config_root = ElementTree.fromstring(unicode(modo_config_file.read(), errors='ignore'))
     except:
-        modo.dialogs.alert("Failed", "Could not open config file.")
-        return lx.symbol.e_FAILED
+        # This could happen after reset preference. Everything is OK continue.
+        return
 
     kids = modo_config_root.getchildren()
     
