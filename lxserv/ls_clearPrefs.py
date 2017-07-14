@@ -49,7 +49,8 @@ class ClearPrefsCommandClass(lifesaver.CommanderClass):
         for type in to_clear:
             backup_config_path = lifesaver.get_backup_config_path(type)
             try:
-                os.remove(backup_config_path)
+                if os.path.isfile(backup_config_path):
+                    os.remove(backup_config_path)
             except IOError as e:
                 pass
                 
