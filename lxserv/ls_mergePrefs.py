@@ -52,7 +52,7 @@ def merge_configs(modo_config_path, keepers):
 
             backup_config_path = lifesaver.get_backup_config_path(tag_type)
             new_vals = ElementTree.Element(kid.tag, kid.attrib)
-            if lifesaver.mergeKeeper(tag_type):
+            if lifesaver.merge_keeper(tag_type):
                 try:
                     with open(backup_config_path, "r") as backup_config_file:
                         backup_config_root = ElementTree.fromstring(unicode(backup_config_file.read(), errors='ignore'))

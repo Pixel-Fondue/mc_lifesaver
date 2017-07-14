@@ -1,7 +1,7 @@
 # python
 
+# Format key, description, default preference state, user value, mergeOrCopy
 KEEPERS = [
-# Format key,               ???,               ???,   ???,              , mergeOrCopy
          ['InputRemapping', 'Input Remapping', True, 'ls_inputRemapping', True],
          ['DirBrowser', 'Preset Browser Paths', True, 'ls_dirBrowser', True],
          ['Preferences', 'Preferences', True, 'ls_preferences', True],
@@ -11,8 +11,9 @@ KEEPERS = [
          ['AttributeRecentsAndFrequents', 'Recent and Frequent Tools', True, 'ls_AttributeRecentsAndFrequents', False]
 ]
 
-# TODO Make access function for all data
-def mergeKeeper(key):
+
+def merge_keeper(key):
+    # TODO Make access function for all data
     for idx in xrange(0, len(KEEPERS)):
         if KEEPERS[idx][0] == key:
             return KEEPERS[idx][4]

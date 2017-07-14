@@ -3,6 +3,7 @@
 
 import lx, lifesaver, os
 
+
 class ClearPrefsCommandClass(lifesaver.CommanderClass):
 
     def commander_arguments(self):
@@ -19,9 +20,10 @@ class ClearPrefsCommandClass(lifesaver.CommanderClass):
         return args
 
     def commander_execute(self, msg, flags):
+        args = self.commander_args()
         to_clear = [key for key, enabled in args.iteritems() if enabled]
-        for type in to_clear:
-            backup_config_path = lifesaver.get_backup_config_path(type)
+        for key in to_clear:
+            backup_config_path = lifesaver.get_backup_config_path(key)
             try:
                 if os.path.isfile(backup_config_path):
                     os.remove(backup_config_path)
