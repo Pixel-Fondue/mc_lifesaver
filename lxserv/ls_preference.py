@@ -12,11 +12,19 @@ class PreferenceCommandClass(lifesaver.commander.CommanderClass):
                     'flags': ['reqforvariable'],
                 }, {
                     'name': 'value',
+                    'label': self.labler,
                     'datatype': 'string',
                     'default': "",
                     'flags': ['variable', 'query'],
                 }
             ]
+
+    def labler(self):
+        for i in lifesaver.KEEPERS:
+            if self.commander_arg_value(0) == i[3]:
+                return i[1]
+
+        return "[Error]"
 
     def commander_execute(self, msg, flags):
         name = self.commander_arg_value(0)
