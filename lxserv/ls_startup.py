@@ -16,6 +16,12 @@ class StartupCommandClass(lifesaver.CommanderClass):
                 lx.eval('user.defNew %s boolean' % i[3])
                 lx.eval('user.value %s true' % i[3])
 
+        # We also need to declare this here instead of a config because otherwise it will be invalidated
+        # on preferences reset.
+        if not lx.eval('query scriptsysservice userValue.isDefined ? lifesaver_first_time_after_reset'):
+            lx.eval('user.defNew lifesaver_first_time_after_reset boolean')
+            lx.eval('user.value lifesaver_first_time_after_reset true')
+
         is_first_time = lx.eval("user.value lifesaver_first_time_after_reset ?")
 
         if is_first_time:
