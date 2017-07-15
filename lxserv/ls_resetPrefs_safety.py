@@ -1,6 +1,6 @@
 # python
 
-import lx, lifesaver
+import lx, modo, lifesaver
 
 class ResetPrefsCommandClass(lifesaver.CommanderClass):
 
