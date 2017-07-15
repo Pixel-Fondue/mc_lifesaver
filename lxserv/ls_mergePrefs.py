@@ -3,6 +3,7 @@
 
 import lx, modo, lifesaver, datetime, errno
 from xml.etree import ElementTree
+from xml.dom import minidom
     
 def merge_unique_first(list1, list2, key):
     len1 = len(list1)
@@ -74,18 +75,15 @@ def merge_configs(modo_config_path, keepers):
             else:
                 new_vals.extend(vals)
 
-            with open(backup_config_path, 'wb') as file:
-                file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-                file.write('\n<!-- backup by lifesaver on %s -->\n\n' % datetime.datetime.now().strftime("%d-%M-%y at %H:%M"))
-                file.write("<configuration>\n\n  ")
-                if not isinstance(new_vals, list):
-                    new_vals = [new_vals]
-                for i in new_vals:
-                    try:
-                        file.write(ElementTree.tostring(i))
-                    except:
-                        pass
-                file.write("\n\n</configuration>")
+            xmlstr = '\n'.join([line for line in minidom.parseString(ElementTree.tostring(new_vals)).toprettyxml(indent=' ' * 2).split('\n') if line.strip()])
+            xmlstr = '\n'.join(xmlstr.splitlines()[1:])
+
+            with open(backup_config_path, "wb") as f:
+                f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+                f.write('\n<!-- backup by lifesaver on %s -->\n\n' % datetime.datetime.now().strftime("%d-%M-%y at %H:%M"))
+                f.write('<configuration>\n\n')
+                f.write(xmlstr)
+                f.write('\n\n</configuration>')
 
 class MergePrefsCommandClass(lifesaver.CommanderClass):
 
