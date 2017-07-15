@@ -78,8 +78,14 @@ def merge_configs(modo_config_path, keepers):
                 file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
                 file.write('\n<!-- backup by lifesaver on %s -->\n\n' % datetime.datetime.now().strftime("%d-%M-%y at %H:%M"))
                 file.write("<configuration>\n\n  ")
-                file.write(ElementTree.tostring(new_vals))
-                file.write("\n</configuration>")
+                if not isinstance(new_vals, list):
+                    new_vals = [new_vals]
+                for i in new_vals:
+                    try:
+                        file.write(ElementTree.tostring(i))
+                    except:
+                        pass
+                file.write("\n\n</configuration>")
 
 class MergePrefsCommandClass(lifesaver.CommanderClass):
 
