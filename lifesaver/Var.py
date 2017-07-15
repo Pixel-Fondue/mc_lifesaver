@@ -8,7 +8,8 @@ KEEPERS = [
          ['AppGlobal', 'Global Settings', True, 'ls_appGlobal', True],
          ['UserValues', 'User Values', True, 'ls_UserValues', True],
          ['HudCustomTools_Edit', 'HUD Customizations', True, 'ls_HudCustomTools_Edit', False],
-         ['AttributeRecentsAndFrequents', 'Recent and Frequent Tools', True, 'ls_AttributeRecentsAndFrequents', False]
+         ['AttributeRecentsAndFrequents', 'Recent and Frequent Tools', True, 'ls_AttributeRecentsAndFrequents', False],
+         ['FileSystem', 'Recent Files and Folders', True, 'ls_FileSystem', False]
 ]
 
 
