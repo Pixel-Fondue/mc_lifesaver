@@ -32,7 +32,7 @@ class ResetPrefsCommandClass(lifesaver.CommanderClass):
 
             lx.eval(clearCmd)
 
-            modo.dialogs.alert("Preferences Deleted", "The selected preferences have been deleted.")
+            modo.dialogs.alert("Preferences Deleted", "Backup configs deleted. Changes take effect the next time MODO restarts.")
 
         else:
             modo.dialogs.alert("Abort", "Preferences reset aborted. Nothing will be deleted.")
