@@ -72,8 +72,8 @@ def merge_configs(modo_config_path, keepers):
                 for val in merge_unique_first(vals, backup_vals, key=lambda x: x.attrib.get("key", None)):
                     new_vals.append(val)
             else:
-                new_vals = vals
-            
+                new_vals.extend(vals)
+
             with open(backup_config_path, 'wb') as file:
                 file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
                 file.write('\n<!-- backup by lifesaver on %s -->\n\n' % datetime.datetime.now().strftime("%d-%M-%y at %H:%M"))
