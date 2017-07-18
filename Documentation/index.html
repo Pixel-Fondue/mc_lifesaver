@@ -10,40 +10,51 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <h1>Life Saver Documentation</h1>
+      <div class="videoWrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/rCyNqe7zybU" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="textContent">
+        <h1>Life Saver</h1>
 
-        <div id="quicklinks">
-          <h2>Contents</h2>
+        <p>Life Saver keeps a running backup of your most important MODO preferences.</p>
+
+        <h3>Quickstart</h3>
+        <ol>
+          <li>Install the kit</li>
+          <li>When MODO starts for the first time, select the config fragments to back up. In most cases, it's best to leave all of these enabled. See <strong>Preferences</strong> below for a description of each fragment.</li>
+          <li>Once you have configured your MODO experience, restart MODO. The MODO config will be saved as soon as you successfully quit MODO, and Life Saver will create its first backup the next time MODO starts.</li>
+          <li>Use MODO as normal.</li>
+        </ol>
+
+        <p>Once Life Saver is up and running, it will keep a running backup of your most important preferences in its own Configs folder. When problems arise that force you to use System > Reset Preferences, your important settings will not be affected.</p>
+
+        <h3>Preferences</h3>
+
+        <p><strong>Enable/Disable config fragments</strong> - When enabled, the following config fragments will be extracted from the MODO config file each time MODO starts. When disabled, any existing backup file will be deleted, and from then on the config fragment will not be backed up.
           <ul>
-            <li><a href="#About">About Life Saver<br /></a></li>
-            <li><a href="#breakfast">Make Breakfast<br /><code>mc_lifesaver.breakfast</code></a></li>
+            <li><strong>Input Remapping</strong> - Hotkeys and mouse behaviors</li>
+            <li><strong>Preset Browser Paths</strong> - Any custom folder locations added to the F6 preset browser</li>
+            <li><strong>Preferences</strong> - Most of the settings stored under System > Preferences</li>
+            <li><strong>Global Settings</strong> - Certain settings stored under System > Preferences</li>
+            <li><strong>User Values</strong> - Mainly used by third-party kits and plug-ins to store settings between sessions</li>
+            <li><strong>Recent Files and Folders</strong> - The files listed under File > Open Recent..., as well as File > Open dialog paths, etc.</li>
+            <li><strong>Check for Updates</strong> - Whether or not to automatically check for MODO updates</li>
+            <li><strong>Post Usage Stats</strong> - Whether or not to send anonymous usage statistics to Foundry</li>
           </ul>
-        </div>
+        </p>
+        <p><strong>Reset MODO Configs</strong> - Equivalent to System > Reset Preferences. Deletes your main MODO config, leaving all Life Saver backups in place.</p>
+        <p><strong>Reset Backup Configs</strong> - Deletes Life Saver backup configs, but leaves the main MODO config file untouched. (Rarely used.)</p>
+        <p><strong>Reset All Configs (factory reset)</strong> - Deletes the main MODO config file AND all Life Saver backup configs, thus reverting MODO to its factory defaults.</p>
 
-        <h2 id="About">About Life Saver</h2>
-        <p>mc_lifesaver is good kit.</p>
-
-        <hr />
-
-        <h2>Life Saver Commands</h2>
-
-        <ul id="commandsList">
-          <li>
-            <h3 id="breakfast">Make Breakfast</h3>
-            <div class="definition">
-              <code>mc_lifesaver.breakfast</code>
-              <p class="tooltip">Choose your favorite breakfast combo!</p>
-            </div>
-            <h4>Typical Usecase</h4>
-            <p>Click the button and prepare to be amazed.</p>
-
-            <h4>Example</h4>
-            <ol>
-              <li>hit <span class="keystroke">ctrl-shift-alt-B</span></li>
-              <li>profit</li>
-            </ol>
-            <p>Result: you just got served.</p>
-          </li>
-        </ul>
+        <h3>Technical Details</h3>
+        <p>When MODO quits successfully, it saves its configuration settings from RAM to the main MODO config. This config file includes literally everything about your MODO session, so that the next time MODO starts, it will look exactly the way you left it.</p>
+        <p>When problems arise, they are often stored into the main MODO config file. Corrupted MODO config files can lead to crashes, erratic behavior, and all sorts of unexpected glitches. Many MODO problems can be fixed by deleting the main MODO config.</p>
+        <p>Unfortunately, this means deleting <em>all</em> of your configs, including the ones you spent time carefully setting up: your custom hotkeys, units and document settings, Preset Browser locations, et cetera. Until now, a preferences reset meant resetting <em>everything</em>.</p>
+        <p>Configs like Input Remapping and Preset Browser paths are almost never corrupted. They are simple, straightforward, and there is almost never a reason to reset them.</p>
+        <p>Every time MODO starts up, Life Saver runs a script that crawls over the entire MODO config file looking for certain fragments. If it finds something worth keeping, it merges it into a backup config file in the kit's Configs folder. (Each fragment is stored inside its own backup file.)</p>
+        <p>With Life Saver installed, the extracted fragments are kept safe, so that running System > Reset Preferences won't delete them. Since these fragments of the kind that are almost never corrupt, you should be able to keep them around without a problem. The next time a MODO config is corrupted, just run System > Reset Preferences, and the corrupt stuff will be deleted, leaving the backups in place.</p>
+        <p>If, however, you want to delete your backups, you can always (a) uninstall the kit, or (b) run either <em>Reset Backup Configs</em> or <em>Reset All Configs</em> to clean house. These scripts simply delete the backup files from the kit's Configs folder.</p>
+        <p>Life Saver is, in effect, a hack. If the MODO config system were more robust, we wouldn't have to do this. I hope that someday it will be unnecessary. For now, I hope it's helpful. Let me know if I can make it better.</p>
+      </div>
     </body>
 </html>
