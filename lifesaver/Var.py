@@ -9,7 +9,7 @@ KEEPERS = [
          ['UserValues', 'User Values', True, 'ls_UserValues', True],
         #  ['HudCustomTools_Edit', 'HUD Customizations', True, 'ls_HudCustomTools_Edit', False],
         #  ['AttributeRecentsAndFrequents', 'Recent and Frequent Tools', True, 'ls_AttributeRecentsAndFrequents', False],
-         ['FileSystem', 'Recent Files and Folders', True, 'ls_FileSystem', False],
+        #  ['FileSystem', 'Recent Files and Folders', True, 'ls_FileSystem', False],
          ['CheckForUpdates', 'Check for Updates', True, 'ls_CheckForUpdates', False],
          ['PostUsageStats', 'Post Usage Stats', True, 'ls_PostUsageStats', False]
 ]
