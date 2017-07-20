@@ -74,6 +74,8 @@ def merge_configs(modo_config_path, keepers):
                     new_vals.append(val)
             else:
                 new_vals.extend(vals)
+                if tag_type == "HudCustomTools_Edit":
+                    lx.out(len(new_vals))
 
             xmlstr = '\n'.join([line for line in minidom.parseString(ElementTree.tostring(new_vals)).toprettyxml(indent=' ' * 2).split('\n') if line.strip()])
             xmlstr = '\n'.join(xmlstr.splitlines()[1:])
